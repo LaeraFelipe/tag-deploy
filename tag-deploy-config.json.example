@@ -1,0 +1,21 @@
+{
+  "global": {
+    "deployments": [
+      {
+        "name": "homolog",
+        "branch": "develop",
+        "modifier": "-rc"
+      },
+      {
+        "name": "production",
+        "branch": "develop"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "name": "project name",
+      "path": "path to your project"
+    }
+  ]
+}
