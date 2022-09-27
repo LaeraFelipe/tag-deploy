@@ -8,7 +8,7 @@
       },
       {
         "name": "production",
-        "branch": "develop"
+        "branch": "master"
       }
     ]
   },
