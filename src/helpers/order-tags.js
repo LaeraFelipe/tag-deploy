@@ -1,6 +1,5 @@
 const convertTagToNumber = (tag) => {
   const [version, rc] = tag.split("-");
-  console.log(tag);
   //padding zeros to handle modifiers.
   let number = Number(
     version
@@ -11,9 +10,6 @@ const convertTagToNumber = (tag) => {
       .replace(/\./g, "")
       .trim()
   );
-
-  console.log(number);
-
   if (rc) {
     number += Number(rc.replace("rc", "").trim());
   }
