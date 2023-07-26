@@ -9,6 +9,8 @@ const pull = require("./git/pull");
 const createTag = require("./git/create-tag");
 
 const config = require("../tag-deploy-config.json");
+const forceTag = require("./questions/force-tag");
+const deleteTag = require("./git/delete-tag");
 
 (async () => {
   console.clear();
@@ -32,7 +34,18 @@ const config = require("../tag-deploy-config.json");
 
   await pull(project.path);
 
-  await createTag(project.path, targetTag);
+  const tagCreated = await createTag(project.path, targetTag);
+
+  if (!tagCreated) {
+    const force = await forceTag();
+    if (force) {
+      await deleteTag(project.path, targetTag);
+      await createTag(project.path, targetTag);
+    } else {
+      console.log(chalk.bold.yellow(`tag (${targetTag}) canceled`));
+      return;
+    }
+  }
 
   console.log(
     `${chalk.bold.greenBright(`tag (${targetTag}) succesfuly published`)}`

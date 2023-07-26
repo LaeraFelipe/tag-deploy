@@ -14,5 +14,8 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "inquirer": "^8.2.4"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.3"
   }
 }
