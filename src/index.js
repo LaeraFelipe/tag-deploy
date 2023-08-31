@@ -8,17 +8,22 @@ const getTags = require("./git/get-tags");
 const pull = require("./git/pull");
 const createTag = require("./git/create-tag");
 
-const config = require("../tag-deploy-config.json");
+const configFile = require("../tag-deploy-config.json");
 const forceTag = require("./questions/force-tag");
 const deleteTag = require("./git/delete-tag");
+const createDeploymentConfig = require("./questions/create-deployment-config");
 
 (async () => {
   console.clear();
   console.log(chalk.cyan.bold("TAG-DEPLOY 1.0"), "\n");
 
-  const project = await projectQuestion(config);
+  let configuration = configFile;
 
-  const deployments = project.deployments ?? config.global.deployments;
+  configuration = await createDeploymentConfig();
+
+  const project = await projectQuestion(configuration);
+
+  const deployments = project.deployments ?? configuration.global.deployments;
 
   const deployment = await deploymentQuestion(deployments);
 
