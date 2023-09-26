@@ -1,18 +1,19 @@
-const fs = require('fs');
-const inquirer = require('inquirer');
-const config = require('../../tag-deploy-config.json');
+const fs = require("fs");
+const inquirer = require("inquirer");
+const config = require("../../tag-deploy-config.json");
+const path = require("path");
 
 const DEFAULT_CONFIGURATION = {
   global: {
     deployments: [
       {
-        name: 'homolog',
-        branch: 'develop',
-        modifier: '-rc',
+        name: "homolog",
+        branch: "develop",
+        modifier: "-rc",
       },
       {
-        name: 'production',
-        branch: 'master',
+        name: "production",
+        branch: "master",
       },
     ],
   },
@@ -21,6 +22,7 @@ const DEFAULT_CONFIGURATION = {
 
 async function createDeploymentConfig() {
   const configuration = config ?? DEFAULT_CONFIGURATION;
+  const directory = path.resolve(require.main.filename, "../../");
 
   if (config.projects.length) {
     return config;
@@ -28,9 +30,9 @@ async function createDeploymentConfig() {
 
   const { addProject } = await inquirer.prompt([
     {
-      message: 'Want to add a project?',
-      name: 'addProject',
-      type: 'confirm',
+      message: "Want to add a project?",
+      name: "addProject",
+      type: "confirm",
     },
   ]);
 
@@ -40,25 +42,24 @@ async function createDeploymentConfig() {
 
   const { mode } = await inquirer.prompt([
     {
-      message:
-        'Do you want to insert manually or automatically from a path?',
-      name: 'mode',
-      type: 'list',
-      choices: ['Manual', 'From a path'],
+      message: "Do you want to insert manually or automatically from a path?",
+      name: "mode",
+      type: "list",
+      choices: ["Manual", "From a path"],
       validate: function (input) {
-        return Boolean(input) || 'Enter a value';
+        return Boolean(input) || "Enter a value";
       },
     },
   ]);
 
-  if (mode === 'Manual') {
+  if (mode === "Manual") {
     await fromManualExecute(configuration);
   } else {
     await fromPathExecute(configuration);
   }
 
   fs.writeFileSync(
-    'tag-deploy-config.json',
+    `${directory}/tag-deploy-config.json`,
     JSON.stringify(configuration, null, 2)
   );
 
@@ -68,14 +69,14 @@ async function createDeploymentConfig() {
 async function fromPathExecute(configuration) {
   const { path } = await inquirer.prompt([
     {
-      message: 'Enter the file path',
-      name: 'path',
-      type: 'input',
+      message: "Enter the file path",
+      name: "path",
+      type: "input",
       validate: function (input) {
         if (!input) {
-          return 'Enter a value';
+          return "Enter a value";
         }
-        return fs.existsSync(input) || 'Path not found';
+        return fs.existsSync(input) || "Path not found";
       },
     },
   ]);
@@ -88,18 +89,18 @@ async function fromPathExecute(configuration) {
 
   const { projects } = await inquirer.prompt([
     {
-      message: 'Select the projects',
-      name: 'projects',
-      type: 'checkbox',
+      message: "Select the projects",
+      name: "projects",
+      type: "checkbox",
       choices: foldersNames,
       validate: function (input) {
-        return Boolean(input.length) || 'Choose a project';
+        return Boolean(input.length) || "Choose a project";
       },
     },
   ]);
 
   if (!projects.length) {
-    throw 'No projects selected';
+    throw "No projects selected";
   }
 
   for (const projectName of projects) {
@@ -124,22 +125,22 @@ async function fromPathExecute(configuration) {
 async function fromManualExecute(configuration) {
   const project = await inquirer.prompt([
     {
-      message: 'Enter the name',
-      name: 'name',
-      type: 'input',
+      message: "Enter the name",
+      name: "name",
+      type: "input",
       validate: function (input) {
-        return Boolean(input) || 'Enter the name';
+        return Boolean(input) || "Enter the name";
       },
     },
     {
-      message: 'Enter the file path',
-      name: 'path',
-      type: 'input',
+      message: "Enter the file path",
+      name: "path",
+      type: "input",
       validate: function (input) {
         if (!input) {
-          return 'Enter a value';
+          return "Enter a value";
         }
-        return fs.existsSync(input) || 'Path not found';
+        return fs.existsSync(input) || "Path not found";
       },
     },
   ]);
