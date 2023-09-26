@@ -24,7 +24,9 @@ async function createDeploymentConfig() {
   const configuration = config ?? DEFAULT_CONFIGURATION;
   const directory = path.resolve(require.main.filename, "../../");
 
-  if (config.projects.length) {
+  const isAddProjects = process.argv.includes("--add");
+
+  if (config.projects.length && !isAddProjects) {
     return config;
   }
 
