@@ -22,6 +22,10 @@ const DEFAULT_CONFIGURATION = {
 async function createDeploymentConfig() {
   const configuration = config ?? DEFAULT_CONFIGURATION;
 
+  if (config.projects.length) {
+    return config;
+  }
+
   const { addProject } = await inquirer.prompt([
     {
       message: 'Want to add a project?',
