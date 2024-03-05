@@ -1,14 +1,15 @@
 const convertTagToNumber = (tag) => {
   const [version, rc] = tag.split("-");
+
+  const paths = version.replace("v", "").split(".");
+
   //padding zeros to handle modifiers.
   let number = Number(
-    version
-      .replace("v", "")
-      .split(".")
-      .map((number) => Number(number) + 10000)
-      .join(".")
-      .replace(/\./g, "")
-      .trim()
+    paths.reduce(
+      (acc, number, index) =>
+        acc + Number(number) * ((paths.length - index) * 1000),
+      0
+    )
   );
   if (rc) {
     number += Number(rc.replace("rc", "").trim());
