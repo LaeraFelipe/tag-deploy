@@ -13,9 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.0.0",
-    "inquirer": "^8.2.4"
+    "inquirer": "^8.2.4",
+    "inquirer-search-list": "^1.2.6",
+    "semver": "^7.7.2"
   },
   "devDependencies": {
-    "@types/inquirer": "^9.0.3"
+    "@types/inquirer": "^9.0.3",
+    "@types/semver": "^7.7.0"
   }
 }
