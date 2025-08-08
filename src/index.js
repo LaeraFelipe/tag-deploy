@@ -17,6 +17,11 @@ const createDeploymentConfig = require("./questions/create-deployment-config");
   console.clear();
   console.log(chalk.cyan.bold("TAG-DEPLOY 1.0"), "\n");
 
+  if (process.argv.includes("--report")) {
+    require("./report");
+    return;
+  }
+
   let configuration = configFile;
 
   configuration = await createDeploymentConfig();
@@ -25,7 +30,7 @@ const createDeploymentConfig = require("./questions/create-deployment-config");
 
   const deployments = project.deployments ?? configuration.global.deployments;
 
-  const modifiers = deployments.map(item => item.modifier).filter(Boolean);
+  const modifiers = deployments.map((item) => item.modifier).filter(Boolean);
 
   const deployment = await deploymentQuestion(deployments);
 
