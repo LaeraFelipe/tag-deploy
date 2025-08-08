@@ -33,6 +33,10 @@ const getTagsOptions = (lastTag, modifier) => {
       name: `${chalk.bold.blue("major")} (${chalk.bold.yellow(majorVersion)})`,
       value: majorVersion,
     },
+    {
+      name: `${chalk.bold.blue("custom")}`,
+      value: "CUSTOM",
+    },
   ];
 
   const hasModifier = lastTag.match(/-.*/);
@@ -65,7 +69,7 @@ const tagQuestion = async (lastTag, deployment) => {
 
   console.log(`${chalk.bold.cyan(`last tag`)} (${chalk.bold.yellow(lastTag)})`);
 
-  const { targetTag } = await inquirer.prompt([
+  let { targetTag } = await inquirer.prompt([
     {
       message: `select target tag`,
       name: "targetTag",
@@ -73,6 +77,16 @@ const tagQuestion = async (lastTag, deployment) => {
       choices: tagOptions,
     },
   ]);
+
+  if (targetTag === "CUSTOM") {
+    ({ targetTag } = await inquirer.prompt([
+      {
+        message: `input the target tag`,
+        name: "targetTag",
+        type: "input",
+      },
+    ]));
+  }
 
   return targetTag;
 };

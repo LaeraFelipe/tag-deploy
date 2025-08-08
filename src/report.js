@@ -33,6 +33,10 @@ const loadConsole = require("./helpers/load-console");
 
       const tags = await getTags(project.path, modifiers, false);
       const lastTag = orderTags(tags).reverse()?.[0] ?? "0.0.0";
+      const currentRelease =
+        orderTags(tags)
+          .filter((item) => !item.match(/-.*/))
+          .reverse()?.[0] ?? "0.0.0";
 
       const major = resetModifier(increaseVersion(lastTag, 0, null), null);
       const minor = resetModifier(increaseVersion(lastTag, 1, null), null);
@@ -47,6 +51,7 @@ const loadConsole = require("./helpers/load-console");
       report[index] = {
         project: project.name,
         current_tag: lastTag,
+        current_release: currentRelease,
         next_release: release,
         path_up: path,
         minor_up: minor,
