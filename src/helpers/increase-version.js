@@ -1,11 +1,7 @@
 const increaseVersion = (fullVersion, indexToIncrease, modifier) => {
   let version, modifierVersion;
 
-  if (modifier) {
-    [version, modifierVersion] = fullVersion.split(modifier ?? "");
-  } else {
-    version = fullVersion;
-  }
+  [version, modifierVersion] = fullVersion.split("-");
 
   const versionNumbers = version
     .replace("v", "")
@@ -22,9 +18,13 @@ const increaseVersion = (fullVersion, indexToIncrease, modifier) => {
     versionNumbers[index] = 0;
   }
 
-  return `v${versionNumbers.join(".")}${modifier ?? ""}${
-    modifierVersion ?? ""
-  }`;
+  let resultVersion = `v${versionNumbers.join(".")}`;
+
+  if (modifier && modifierVersion) {
+    resultVersion = resultVersion.concat("-", modifierVersion);
+  }
+
+  return resultVersion;
 };
 
 module.exports = increaseVersion;

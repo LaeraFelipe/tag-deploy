@@ -25,13 +25,15 @@ const createDeploymentConfig = require("./questions/create-deployment-config");
 
   const deployments = project.deployments ?? configuration.global.deployments;
 
+  const modifiers = deployments.map(item => item.modifier).filter(Boolean);
+
   const deployment = await deploymentQuestion(deployments);
 
   console.log("");
 
   await checkout(project.path, deployment.branch);
 
-  const tags = await getTags(project.path);
+  const tags = await getTags(project.path, modifiers);
 
   const lastTag = orderTags(tags).reverse()?.[0] ?? "0.0.0";
 

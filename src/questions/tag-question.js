@@ -19,6 +19,7 @@ const getTagsOptions = (lastTag, modifier) => {
   );
 
   let customOptions = [];
+
   let commonOptions = [
     {
       name: `${chalk.bold.blue("patch")} (${chalk.bold.yellow(pathVersion)})`,
@@ -34,12 +35,25 @@ const getTagsOptions = (lastTag, modifier) => {
     },
   ];
 
+  const hasModifier = lastTag.match(/-.*/);
+
+  if (hasModifier && !modifier) {
+    const relaseVersion = lastTag.replace(/-.*/, "");
+
+    customOptions.push({
+      name: `${chalk.bold.blue("release")} (${chalk.bold.yellow(
+        relaseVersion
+      )})`,
+      value: relaseVersion,
+    });
+  }
+
   if (modifier && lastTag.includes(modifier)) {
     customOptions.push({
       name: `${chalk.bold.blue("modifier")} (${chalk.bold.yellow(
-        increaseModifier(choosenTag, modifier)
+        increaseModifier(lastTag, modifier)
       )})`,
-      value: increaseModifier(choosenTag, modifier),
+      value: increaseModifier(lastTag, modifier),
     });
   }
 
