@@ -17,14 +17,19 @@ const createDeploymentConfig = require("./questions/create-deployment-config");
   console.clear();
   console.log(chalk.cyan.bold("TAG-DEPLOY 1.0"), "\n");
 
+  let configuration = configFile;
+  configuration = await createDeploymentConfig();
+
   if (process.argv.includes("--report")) {
     require("./report");
     return;
   }
 
-  let configuration = configFile;
+  if (process.argv.includes("--config")) {
+    require("./open-config");
+    return;
+  }
 
-  configuration = await createDeploymentConfig();
 
   const project = await projectQuestion(configuration);
 

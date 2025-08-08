@@ -1,21 +1,54 @@
-# Tag deploy
+# Tag Deploy
 
-Tag Deploy is an innovative solution designed to simplify the process of adding tags in Git, making it more efficient to configure projects for deployment. With this intuitive tool, you can easily add and manage tags, customizing the identification of specific points in your repository. In addition, Tag Deploy gives you the flexibility to configure specific environments for each tag, ensuring precise control over deployment destinations. Simplify your deployment workflow and gain more control over your projects with Tag Deploy
+**Tag Deploy** is a lightweight CLI tool that simplifies the process of adding and managing Git tags, making it easier to prepare projects for deployment.
 
-## Using
+With an intuitive interface, you can:
 
-- Pull the project to your local machine.
-- [Run npm install and npm link do assign `tag-deploy` command.](#link-configuration)
-- [Rename the file tag-deploy-config.json.example to tag-deploy-config.json and modify with your projects infos.](#configuration)
-- Run `tag-deploy` in your command line.
+* Quickly create and manage tags.
+* Configure custom identifiers for specific points in your repository.
+* Define distinct deployment environments for each tag.
+* Maintain precise control over deployment destinations.
 
-## Configuration
+Streamline your deployment workflow and gain more control over your projects with **Tag Deploy**.
 
-To configure the project, create a file in the root called 'tag-deploy-config'. If you prefer, use the sample configuration below as a starting point for your own configuration:
+---
+
+## 📦 Installation & Usage
+
+1. Clone this repository:
+
+   ```bash
+   git clone <repository-url>
+   ```
+2. Install dependencies and link the command globally:
+
+   ```bash
+   npm install
+   npm link
+   ```
+3. Rename the example config file:
+
+   ```bash
+   mv tag-deploy-config.json.example tag-deploy-config.json
+   ```
+4. Edit the configuration file with your project details.
+5. Run:
+
+   ```bash
+   tag-deploy
+   ```
+
+---
+
+## ⚙️ Configuration
+
+Create a file in the root directory called `tag-deploy-config.json`.
+You can use the example below as a starting point:
 
 ```json
 {
   "global": {
+    "editor": "code -w",
     "deployments": [
       {
         "name": "homolog",
@@ -32,13 +65,16 @@ To configure the project, create a file in the root called 'tag-deploy-config'. 
 }
 ```
 
-### Projects
+---
 
-You can configure the project manually by changing the JSON values in the 'tag-deploy-config' file, resulting in a configuration similar to the example below:
+### 📂 Projects
+
+You can manually configure projects by editing the `projects` array in `tag-deploy-config.json`:
 
 ```json
 {
   "global": {
+    "editor": "code -w",
     "deployments": [
       {
         "name": "homolog",
@@ -51,25 +87,43 @@ You can configure the project manually by changing the JSON values in the 'tag-d
       }
     ]
   },
-  "projects": [{ "name": "", "path": "" }]
+  "projects": [
+    { "name": "project-1", "path": "/path/to/project-1" }
+  ]
 }
 ```
 
-An alternative is to include the '--add' option before the project execution command. This tells the system that you want to add it and it will create an interface where you can manually enter the information or specify the path of a folder containing several projects. This way, you can select the projects you want to configure simultaneously.
+Alternatively, you can use the interactive setup:
 
 ```bash
 tag-deploy --add
 ```
 
-## Link configuration
+This allows you to:
 
-To run the project from any directory in your terminal, you can create an npm link. To do this, simply access the folder where your project is located in the terminal and run the following command:
+* Add a project manually.
+* Provide a folder path containing multiple projects and select the ones you want to configure simultaneously.
+
+---
+
+## 🔗 Link Configuration
+
+To run `tag-deploy` from any directory, link it globally:
 
 ```bash
 npm link
 ```
 
-## Autores
+---
 
-- [@laerafelipe](https://www.github.com/LaeraFelipe)
-- [@rennerborges](https://www.github.com/rennerborges)
+## 📜 CLI Options
+
+* `tag-deploy --config` → Opens the configuration file in your chosen editor (set in the `global.editor` field).
+* `tag-deploy --report` → Displays a table of all configured projects with their tag information.
+
+---
+
+## 👥 Authors
+
+* [@laerafelipe](https://github.com/LaeraFelipe)
+* [@rennerborges](https://github.com/rennerborges)
