@@ -34,12 +34,12 @@ const getTagsOptions = (lastTag, modifier) => {
     },
   ];
 
-  if (modifier) {
+  if (modifier && lastTag.includes(modifier)) {
     customOptions.push({
       name: `${chalk.bold.blue("modifier")} (${chalk.bold.yellow(
-        increaseModifier(lastTag, modifier)
+        increaseModifier(choosenTag, modifier)
       )})`,
-      value: increaseModifier(lastTag, modifier),
+      value: increaseModifier(choosenTag, modifier),
     });
   }
 

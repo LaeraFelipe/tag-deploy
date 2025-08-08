@@ -2,7 +2,7 @@ const chalk = require("chalk");
 const executeAsync = require("../helpers/execute-as-promise");
 const loadConsole = require("../helpers/load-console");
 
-const getTags = async (directory, modifier) => {
+const getTags = async (directory) => {
   console.log(chalk.bold.cyan(`fetching tags`));
 
   const stopLoad = loadConsole();
@@ -12,10 +12,6 @@ const getTags = async (directory, modifier) => {
   stopLoad();
 
   let expression = "v\\d*\\.\\d*.\\d*";
-
-  if (modifier) {
-    expression = expression.concat(`${modifier}\\d*`);
-  }
 
   expression = expression.concat("$");
 

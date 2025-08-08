@@ -31,7 +31,7 @@ const createDeploymentConfig = require("./questions/create-deployment-config");
 
   await checkout(project.path, deployment.branch);
 
-  const tags = await getTags(project.path, deployment.modifier);
+  const tags = await getTags(project.path);
 
   const lastTag = orderTags(tags).reverse()?.[0] ?? "0.0.0";
 
