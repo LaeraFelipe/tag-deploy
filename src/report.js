@@ -20,7 +20,9 @@ const loadConsole = require("./helpers/load-console");
   console.log(chalk.bold.cyan(`loading data...`));
   const stopLoad = loadConsole();
 
-  for (const project of projects) {
+  for (let index = 0; index < projects.length; index++) {
+    const project = projects[index];
+
     const load = async () => {
       const deployments =
         project.deployments ?? configuration.global.deployments;
@@ -33,16 +35,23 @@ const loadConsole = require("./helpers/load-console");
       const lastTag = orderTags(tags).reverse()?.[0] ?? "0.0.0";
 
       const major = resetModifier(increaseVersion(lastTag, 0, null), null);
-      const minor = resetnull(increaseVersion(lastTag, 1, null), null);
-      const path = resetnull(increaseVersion(lastTag, 2, null), null);
+      const minor = resetModifier(increaseVersion(lastTag, 1, null), null);
+      const path = resetModifier(increaseVersion(lastTag, 2, null), null);
 
-      report.push({
+      let release = "none";
+      const hasModifier = lastTag.match(/-.*/);
+      if (hasModifier) {
+        release = lastTag.replace(/-.*/, "");
+      }
+
+      report[index] = {
         project: project.name,
         current_tag: lastTag,
+        next_release: release,
         path_up: path,
         minor_up: minor,
         major_up: major,
-      });
+      };
     };
     promises.push(load());
   }
