@@ -6,13 +6,28 @@ const configFile = require("../tag-deploy-config.json");
 const resetModifier = require("./helpers/reset-modifier");
 const increaseVersion = require("./helpers/increase-version");
 const loadConsole = require("./helpers/load-console");
+const inquirer = require('inquirer');
 
 (async () => {
   console.clear();
 
   let configuration = configFile;
 
-  const projects = configuration.projects ?? [];
+  const allProjects = configuration.projects ?? [];
+
+  const projectsChoices = allProjects.map((item) => ({
+    name: item.name,
+    value: item,
+  }));
+
+  let { projects } = await inquirer.prompt([
+    {
+      type: "checkbox",
+      name: "projects",
+      choices: projectsChoices,
+      message: "select the projects that you want to report",
+    },
+  ]);
 
   let promises = [];
   let report = [];
