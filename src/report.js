@@ -6,7 +6,8 @@ const configFile = require("../tag-deploy-config.json");
 const resetModifier = require("./helpers/reset-modifier");
 const increaseVersion = require("./helpers/increase-version");
 const loadConsole = require("./helpers/load-console");
-const inquirer = require('inquirer');
+const inquirer = require("inquirer");
+const Fuse = require("fuse.js");
 
 (async () => {
   console.clear();
@@ -20,14 +21,25 @@ const inquirer = require('inquirer');
     value: item,
   }));
 
-  let { projects } = await inquirer.prompt([
-    {
-      type: "checkbox",
-      name: "projects",
-      choices: projectsChoices,
-      message: "select the projects that you want to report",
-    },
-  ]);
+  const lastArg = process.argv[process.argv.length - 1];
+
+  let projects = [];
+
+  if (lastArg === "--report") {
+    ({ projects } = await inquirer.prompt([
+      {
+        type: "checkbox",
+        name: "projects",
+        choices: projectsChoices,
+        message: "select the projects that you want to report",
+      },
+    ]));
+  } else {
+    const fuse = new Fuse(allProjects, {
+      keys: ["name", "path"],
+    });
+    projects = fuse.search(lastArg).map((item) => item.item);
+  }
 
   let promises = [];
   let report = [];
