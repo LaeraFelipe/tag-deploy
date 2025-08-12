@@ -37,8 +37,17 @@ const Fuse = require("fuse.js");
   } else {
     const fuse = new Fuse(allProjects, {
       keys: ["name", "path"],
+      minMatchCharLength: lastArg.length,
     });
-    projects = fuse.search(lastArg).map((item) => item.item);
+    projects = fuse
+      .search(lastArg)
+      .map((item) => item.item)
+      .slice(0, 1);
+  }
+
+  if (projects.length === 0) {
+    console.log(chalk.bold.red(`no projects founded!`));
+    return;
   }
 
   let promises = [];
