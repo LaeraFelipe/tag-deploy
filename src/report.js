@@ -37,7 +37,6 @@ const Fuse = require("fuse.js");
   } else {
     const fuse = new Fuse(allProjects, {
       keys: ["name", "path"],
-      minMatchCharLength: lastArg.length,
     });
     projects = fuse
       .search(lastArg)
