@@ -8,6 +8,7 @@ export const postGoogleChatMessage = async ({
   commitUrl,
   googleChatBuildButtonLink,
   googleChatTagButtonLink,
+  googleChatImageUrl,
   //build is used on eval context
   buildJobName,
 }) => {
@@ -28,8 +29,7 @@ export const postGoogleChatMessage = async ({
             header: {
               title: `${repository}/${tag}`,
               subtitle: `Deployment started in repository <b>${repository}</b> with version <b>${tag}</b>`,
-              imageUrl:
-                "https://skyone-integrasky-v2-prod-inventory.s3.us-east-1.amazonaws.com/general/skyone-data-profile-image.png",
+              imageUrl: googleChatImageUrl,
             },
             sections: [
               {

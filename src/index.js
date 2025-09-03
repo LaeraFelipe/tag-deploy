@@ -90,6 +90,7 @@ const getGitBranch = require("./git/get-branch");
       googleChatTagButtonLink:
         project.googleChatTagButtonLink ??
         configuration.global.googleChatTagButtonLink,
+      googleChatImageUrl: configuration.global.googleChatImageUrl,
     });
   }
 
