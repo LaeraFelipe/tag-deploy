@@ -12,6 +12,12 @@ const configFile = require("../tag-deploy-config.json");
 const forceTag = require("./questions/force-tag");
 const deleteTag = require("./git/delete-tag");
 const createDeploymentConfig = require("./questions/create-deployment-config");
+const { postGoogleChatMessage } = require("./helpers/post-google-chat-message");
+const getGitName = require("./git/get-name");
+const getGitEmail = require("./git/get-email");
+const getCommitUrl = require("./git/get-commit-url");
+const getGitRepositoryName = require("./git/get-repository-name");
+const getGitBranch = require("./git/get-branch");
 
 (async () => {
   console.clear();
@@ -29,7 +35,6 @@ const createDeploymentConfig = require("./questions/create-deployment-config");
     require("./open-config");
     return;
   }
-
 
   const project = await projectQuestion(configuration);
 
@@ -51,9 +56,9 @@ const createDeploymentConfig = require("./questions/create-deployment-config");
 
   await pull(project.path);
 
-  const tagCreated = await createTag(project.path, targetTag);
+  const createdTag = await createTag(project.path, targetTag);
 
-  if (!tagCreated) {
+  if (!createdTag) {
     const force = await forceTag();
     if (force) {
       await deleteTag(project.path, targetTag);
@@ -62,6 +67,30 @@ const createDeploymentConfig = require("./questions/create-deployment-config");
       console.log(chalk.bold.yellow(`tag (${targetTag}) canceled`));
       return;
     }
+  }
+
+  if (configuration.global.googleChatWebhook) {
+    const userName = await getGitName(project.path);
+    const userEmail = await getGitEmail(project.path);
+    const commitUrl = await getCommitUrl(project.path);
+    const repositoryName = await getGitRepositoryName(project.path);
+    const branch = await getGitBranch(project.path);
+    await postGoogleChatMessage({
+      userName,
+      userEmail,
+      branch,
+      commitUrl,
+      repository: repositoryName,
+      webhookUrl: configuration.global.googleChatWebhook,
+      tag: targetTag,
+      buildJobName: project.buildJobName,
+      googleChatBuildButtonLink:
+        project.googleChatBuildButtonLink ??
+        configuration.global.googleChatBuildButtonLink,
+      googleChatTagButtonLink:
+        project.googleChatTagButtonLink ??
+        configuration.global.googleChatTagButtonLink,
+    });
   }
 
   console.log(

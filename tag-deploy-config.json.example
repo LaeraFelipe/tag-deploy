@@ -1,6 +1,9 @@
 {
   "global": {
     "editor": "code -w",
+    "googleChatWebhook": "https://your-google-chat/webhook",
+    "googleChatTagButtonLink": "https://your-git-service/${tag}",
+    "googleChatBuildButtonLink": "https://your-build-service/${tag}",
     "deployments": [
       {
         "name": "homolog",
